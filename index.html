@@ -27,13 +27,29 @@
             <button id="closePaymentModal" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">✕</button>
             <h2 class="modal-title" style="margin-top: 10px;">Pay <span id="payeeName"></span></h2>
             <p class="modal-subtitle" style="margin-bottom: 10px;">UPI ID: <strong id="payeeUpi" style="color: var(--text-main);"></strong></p>
+            <p class="modal-subtitle" style="margin-bottom: 20px; color: var(--success); font-weight: 600;">Amount: ₹<span id="paymentAmount">0</span></p>
             
-            <div style="background: white; padding: 15px; border-radius: 12px; display: inline-block; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                <img id="paymentQRCode" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block;">
+            <div class="payment-options">
+                <div class="payment-option">
+                    <h4 style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">📱 Scan QR Code</h4>
+                    <div style="background: var(--card-bg); padding: 15px; border-radius: 12px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <canvas id="paymentQRCode" style="width: 200px; height: 200px; display: block;"></canvas>
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px; text-align: center;">Works with any UPI app</p>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">💳 Pay From App</h4>
+                    <div class="app-buttons">
+                        <a id="openGPayBtn" href="#" class="btn btn-app" style="margin-right: 8px; margin-bottom: 8px;">🔵 Google Pay</a>
+                        <a id="openPhonepeBtn" href="#" class="btn btn-app" style="margin-right: 8px; margin-bottom: 8px;">🟠 PhonePe</a>
+                        <a id="openPaytmBtn" href="#" class="btn btn-app" style="margin-right: 8px; margin-bottom: 8px;">🔷 Paytm</a>
+                        <a id="openUpiAppBtn" href="#" class="btn btn-app;">📲 Other UPI</a>
+                    </div>
+                </div>
+                
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px; text-align: center;">On mobile? Choose your preferred app above for instant payment</p>
             </div>
-            
-            <a id="openUpiAppBtn" href="#" class="btn btn-success btn-large w-100">📱 Open UPI App</a>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 15px;">If on laptop, scan the QR code with your phone camera or any UPI app (GPay, PhonePe, Paytm).</p>
         </div>
     </div>
 
@@ -135,7 +151,9 @@
 
     <!-- html2canvas Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Application Logic -->
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>

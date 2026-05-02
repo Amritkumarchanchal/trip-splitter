@@ -324,3 +324,45 @@ input:focus, select:focus {
 .html2canvas-container {
     background: var(--card-bg) !important;
 }
+/* Payment Modal Styles */
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.payment-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-app {
+    background: var(--secondary);
+    color: var(--secondary-text);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.btn-app:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.btn-app:active {
+    transform: scale(0.95);
+}

@@ -37,8 +37,12 @@ const paymentModal = document.getElementById('paymentModal');
 const closePaymentModal = document.getElementById('closePaymentModal');
 const payeeName = document.getElementById('payeeName');
 const payeeUpi = document.getElementById('payeeUpi');
+const paymentAmount = document.getElementById('paymentAmount');
 const paymentQRCode = document.getElementById('paymentQRCode');
 const openUpiAppBtn = document.getElementById('openUpiAppBtn');
+const openGPayBtn = document.getElementById('openGPayBtn');
+const openPhonepeBtn = document.getElementById('openPhonepeBtn');
+const openPaytmBtn = document.getElementById('openPaytmBtn');
 
 // Initialize App
 function init() {
@@ -149,12 +153,22 @@ document.addEventListener('click', (e) => {
         const upi = btn.getAttribute('data-upi');
         const amount = btn.getAttribute('data-amount');
         
+        // Generate UPI URL (standard format)
         const upiUrl = `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
         
+        // Update modal with payment details
         payeeName.textContent = name;
         payeeUpi.textContent = upi;
+        paymentAmount.textContent = amount;
+        
+        // Generate proper UPI QR code
+        generateUPIQRCode(upiUrl);
+        
+        // Set up app-specific payment links
+        openGPayBtn.href = `googlepaytez://upi/pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+        openPhonepeBtn.href = `phonepe://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+        openPaytmBtn.href = `paytmqr://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
         openUpiAppBtn.href = upiUrl;
-        paymentQRCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
         
         paymentModal.style.display = 'flex';
     }
@@ -345,6 +359,32 @@ function calculateAndRenderSettlements() {
             </tr>
             `;
         }).join('');
+    }
+}
+
+// Generate UPI QR Code
+function generateUPIQRCode(upiUrl) {
+    // Clear previous QR code
+    const canvas = paymentQRCode;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Use QRCode library to generate QR
+    try {
+        new QRCode(canvas, {
+            text: upiUrl,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    } catch (e) {
+        console.error("Error generating QR code:", e);
+        // Fallback: show error message
+        ctx.fillStyle = "#ff0000";
+        ctx.font = "12px Arial";
+        ctx.fillText("QR Error", 50, 100);
     }
 }
 
