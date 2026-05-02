@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Splitter</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Welcome Modal -->
+    <div id="welcomeModal" class="modal-overlay">
+        <div class="modal-card">
+            <h1 class="modal-title">🏔️ Trip Splitter</h1>
+            <p class="modal-subtitle">Let's set up your new trip.</p>
+            <input type="text" id="setupTripName" placeholder="Enter Trip Name (e.g., Goa 2024)" class="modal-input" autocomplete="off">
+            <button id="startTripBtn" class="btn btn-primary btn-large w-100">Start Trip</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-card" style="position: relative;">
+            <button id="closePaymentModal" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">✕</button>
+            <h2 class="modal-title" style="margin-top: 10px;">Pay <span id="payeeName"></span></h2>
+            <p class="modal-subtitle" style="margin-bottom: 10px;">UPI ID: <strong id="payeeUpi" style="color: var(--text-main);"></strong></p>
+            
+            <div style="background: white; padding: 15px; border-radius: 12px; display: inline-block; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <img id="paymentQRCode" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block;">
+            </div>
+            
+            <a id="openUpiAppBtn" href="#" class="btn btn-success btn-large w-100">📱 Open UPI App</a>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 15px;">If on laptop, scan the QR code with your phone camera or any UPI app (GPay, PhonePe, Paytm).</p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="mainApp" style="display: none;">
+        
+        <!-- Controls Section -->
+        <div class="controls-section no-print">
+            
+            <div class="card header-card">
+                <div class="header-top">
+                    <div>
+                        <h2 id="controlTripName">Trip Name</h2>
+                        <p class="subtitle"><span id="totalMembers">0</span> Members</p>
+                    </div>
+                    <button id="resetBtn" class="btn btn-danger btn-icon" title="Reset Trip">🗑️ Reset</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>👥 Manage Members</h3>
+                <div class="input-group mt-2">
+                    <input type="text" id="newMemberInput" placeholder="Name" autocomplete="off" style="flex: 1;">
+                    <input type="text" id="newMemberUpi" placeholder="UPI ID (optional)" autocomplete="off" style="flex: 1;">
+                    <button id="addMemberBtn" class="btn btn-secondary">Add</button>
+                </div>
+                <div class="members-list" id="membersList"></div>
+            </div>
+
+            <div class="card">
+                <h3>🧾 Add Expense</h3>
+                <form id="expenseForm" class="mt-2">
+                    <input type="text" id="expenseItem" placeholder="What was it for? (e.g. Dinner)" required autocomplete="off">
+                    <div class="form-row mt-2">
+                        <input type="number" id="expenseAmount" placeholder="Amount (₹)" required min="1" step="any">
+                        <select id="expensePayer" required>
+                            <option value="" disabled selected>Paid By...</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-2">Add Expense</button>
+                </form>
+            </div>
+
+            <button id="exportBtn" class="btn btn-success btn-large w-100 mt-2">📸 Save as Image</button>
+        </div>
+
+        <!-- Export Area (Captured by html2canvas) -->
+        <div class="export-section" id="exportArea">
+            <div class="card export-card">
+                
+                <div class="export-header">
+                    <h1 id="displayTripName">Trip Name</h1>
+                    <p class="export-subtitle">Expense & Settlement Report</p>
+                </div>
+
+                <div class="table-wrapper">
+                    <h3>🛒 Expenses</h3>
+                    <table class="minimal-table" id="expensesTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Amount</th>
+                                <th>Paid By</th>
+                                <th class="no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesBody"></tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td>Total</td>
+                                <td id="totalExpenseAmount">₹0</td>
+                                <td></td>
+                                <td class="no-print"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="table-wrapper mt-4">
+                    <h3>💸 Settlements (Who pays whom)</h3>
+                    <table class="minimal-table" id="settlementsTable">
+                        <thead>
+                            <tr>
+                                <th>Person</th>
+                                <th></th>
+                                <th>Pays To</th>
+                                <th>Amount</th>
+                                <th class="no-print">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="settlementsBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="watermark">Created with Trip Splitter</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- html2canvas Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Application Logic -->
+    <script src="script.js?v=2"></script>
+</body>
+</html>
